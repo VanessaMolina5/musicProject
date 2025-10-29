@@ -1,0 +1,84 @@
+.player {
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  width: 100%;
+  background-color: #282828;
+  padding: 10px 20px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  color: white;
+  box-shadow: 0 -2px 10px rgba(0, 0, 0, 0.5);
+}
+
+.song-info {
+  display: flex;
+  align-items: center;
+}
+
+.song-info img {
+  width: 150px;
+  height: 150px;
+  margin-right: 10px;
+  border-radius: 5px;
+}
+
+.song-info .title {
+  font-weight: bold;
+  margin: 0;
+}
+
+.song-info .artist {
+  font-size: 0.9em;
+  color: #b3b3b3;
+  margin: 0;
+}
+
+.controls {
+  display: flex;
+  gap: 15px;
+}
+
+.controls button {
+  background: none;
+  border: none;
+  color: white;
+  font-size: 1.5em;
+  cursor: pointer;
+  transition: color 0.2s;
+}
+
+.controls button:hover {
+  color: #1db954;
+}
+
+.progress {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.progress input[type="range"] {
+  width: 200px;
+  -webkit-appearance: none;
+  appearance: none;
+  height: 4px;
+  background: #5a5a5a;
+  border-radius: 2px;
+  outline: none;
+}
+
+.progress input[type="range"]::-webkit-slider-thumb {
+  -webkit-appearance: none;
+  width: 12px;
+  height: 12px;
+  border-radius: 50%;
+  background: #1db954;
+  cursor: pointer;
+}
+
+.progress .current-time, .progress .duration {
+  font-size: 0.8em;
+  color: #b3b3b3;
+}

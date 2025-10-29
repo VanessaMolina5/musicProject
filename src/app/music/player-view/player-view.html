@@ -1,0 +1,8 @@
+<div class="player-view-container">
+  <img *ngIf="currentSong" [src]="currentSong.albumArt" alt="Album Art" class="main-album-art">
+  <div *ngIf="currentSong" class="song-details">
+    <h2>{{ currentSong.title }}</h2>
+    <h3>{{ currentSong.artist }}</h3>
+  </div>
+  <p *ngIf="!currentSong">No hay canción seleccionada.</p>
+</div>

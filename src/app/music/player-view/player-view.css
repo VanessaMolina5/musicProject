@@ -1,0 +1,36 @@
+.player-view-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 20px;
+  background-color: #1a1a1a;
+  color: #fff;
+  height: 100%;
+  text-align: center;
+}
+
+.main-album-art {
+  width: 300px;
+  height: 300px;
+  object-fit: cover;
+  border-radius: 8px;
+  margin-bottom: 20px;
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.5);
+}
+
+.song-details h2 {
+  font-size: 2.5em;
+  margin-bottom: 5px;
+  color: #e0e0e0;
+}
+
+.song-details h3 {
+  font-size: 1.5em;
+  color: #b3b3b3;
+}
+
+.player-view-container p {
+  font-size: 1.2em;
+  color: #808080;
+}

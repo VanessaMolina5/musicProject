@@ -1,0 +1,23 @@
+<footer class="player">
+    <div class="song-info">
+      <img [src]="currentSong.albumArt" alt="Portada">
+      <div>
+        <p class="title">{{ currentSong.title }}</p>
+        <p class="artist">{{ currentSong.artist }}</p>
+      </div>
+    </div>
+
+ 
+    <div class="controls">
+      <button class="prev" (click)="prevSong()">⏮</button>
+      <button class="play" (click)="playPause()">{{ isPlaying ? '⏸' : '▶' }}</button>
+      <button class="next" (click)="nextSong()">⏭</button>
+    </div>
+
+  
+    <div class="progress">
+      <span class="current-time">{{ currentTime }}</span>
+      <input type="range" [value]="progress" (input)="seek($event)">
+      <span class="duration">{{ duration }}</span>
+    </div>
+  </footer>
