@@ -1,20 +1,40 @@
 import { Injectable } from '@angular/core';
-import { BehaviorSubject, Observable } from 'rxjs';
+import { Subject, BehaviorSubject } from 'rxjs';
+import { SpotifyTrack } from '../models/spotify-models';
 
 @Injectable({
   providedIn: 'root'
 })
 export class MusicPlayerService {
-  private currentSongSubject: BehaviorSubject<any> = new BehaviorSubject<any>(null);
-  public currentSong$: Observable<any> = this.currentSongSubject.asObservable();
+  private currentSong = new BehaviorSubject<SpotifyTrack | null>(null);
+  currentSong$ = this.currentSong.asObservable();
 
-  constructor() { }
+  private playlist: SpotifyTrack[] = [];
+  private currentIndex = -1;
 
-  setCurrentSong(song: any) {
-    this.currentSongSubject.next(song);
+  setPlaylist(playlist: SpotifyTrack[], index: number) {
+    this.playlist = playlist;
+    this.currentIndex = index;
+    this.playCurrentSong();
   }
 
-  getCurrentSong(): any {
-    return this.currentSongSubject.value;
+  private playCurrentSong() {
+    if (this.currentIndex >= 0 && this.currentIndex < this.playlist.length) {
+      this.currentSong.next(this.playlist[this.currentIndex]);
+    }
+  }
+
+  playNext() {
+    if (this.currentIndex < this.playlist.length - 1) {
+      this.currentIndex++;
+      this.playCurrentSong();
+    }
+  }
+
+  playPrevious() {
+    if (this.currentIndex > 0) {
+      this.currentIndex--;
+      this.playCurrentSong();
+    }
   }
 }

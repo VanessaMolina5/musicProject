@@ -1,19 +1,38 @@
-import { Component, signal } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
+import { CommonModule } from '@angular/common';
 import { RouterOutlet } from '@angular/router';
-import { FormsModule } from '@angular/forms';
-import { PlayerViewComponent } from './music/player-view/player-view';
 import { PlayerBarComponent } from './music/player-bar/player-bar';
-import { SearchBarComponent } from './music/search-bar/search-bar';
-import { MusicPlayerService } from './music/music-player.service';
+import { MusicContainerComponent } from './music/music-container/music-container';
+import { AuthService } from './services/auth.service';
+import { SpotifyApiService } from './services/spotify/spotify-api.service';
 
 @Component({
   selector: 'app-root',
   standalone: true,
-  imports: [RouterOutlet, FormsModule, PlayerViewComponent, PlayerBarComponent, SearchBarComponent],
-  providers: [MusicPlayerService],
+  imports: [CommonModule, RouterOutlet, PlayerBarComponent, MusicContainerComponent],
   templateUrl: './app.html',
-  styleUrl: './app.css'
+  styleUrls: ['./app.css']
 })
-export class App {
-  protected readonly title = signal('musicProject');
+export class AppComponent implements OnInit {
+  title = 'musicProject';
+  isAuthenticated = false;
+  private deviceId: string | null = null;
+
+  constructor(private authService: AuthService, private spotifyApiService: SpotifyApiService) {}
+
+  ngOnInit() {
+    const token = this.authService.getToken();
+    if (token) {
+      this.isAuthenticated = true;
+      this.spotifyApiService.initPlayer().then((deviceId: string) => {
+        this.deviceId = deviceId;
+      });
+    } else {
+      this.isAuthenticated = false;
+    }
+  }
+
+  login() {
+    this.authService.login();
+  }
 }

@@ -1,6 +1,8 @@
-import { Component, OnInit } from '@angular/core';
-import { CommonModule } from '@angular/common';
+import { Component, OnDestroy, OnInit } from '@angular/core';
+import { Subscription } from 'rxjs';
 import { MusicPlayerService } from '../music-player.service';
+import { SpotifyTrack } from '../../models/spotify-models';
+import { CommonModule } from '@angular/common';
 
 @Component({
   selector: 'app-player-bar',
@@ -10,40 +12,7 @@ import { MusicPlayerService } from '../music-player.service';
   styleUrl: './player-bar.css',
 })
 export class PlayerBarComponent implements OnInit {
-  playlist: any[] = [
-    {
-      title: 'Tu falta de querer',
-      artist: 'Mon Laferte',
-      albumArt: '/media/Mon Laferte, Vol_ 1 by Mon Laferte on Apple Music.jpg',
-      audioFile: 'https://www.soundhelix.com/examples/mp3/SoundHelix-Song-1.mp3'
-    },
-    {
-      title: 'Circles',
-      artist: 'Post Malone',
-      albumArt: '/media/GO_OD AM - Mac Miller.jpg',
-      audioFile: 'https://www.soundhelix.com/examples/mp3/SoundHelix-Song-2.mp3'
-    },
-    {
-      title: 'Arrullo de estrellas',
-      artist: 'Zoé',
-      albumArt: '/media/descarga (2).jpg',
-      audioFile: 'https://www.soundhelix.com/examples/mp3/SoundHelix-Song-3.mp3'
-    },
-    {
-      title: 'Lovers rock',
-      artist: 'Sade',
-      albumArt: '/media/descarga (3).jpg',
-      audioFile: 'https://www.soundhelix.com/examples/mp3/SoundHelix-Song-4.mp3'
-    },
-    {
-      title: 'Me hace falta',
-      artist: 'Alejandro Sanz',
-      albumArt: '/media/descarga (3).jpg',
-      audioFile: 'https://www.soundhelix.com/examples/mp3/SoundHelix-Song-5.mp3'
-    }
-  ];
-  currentSongIndex: number = 0;
-  currentSong: any;
+  currentSong: SpotifyTrack | null = null;
   isPlaying: boolean = false;
   audio: HTMLAudioElement;
   currentTime: string = '0:00';
@@ -51,15 +20,19 @@ export class PlayerBarComponent implements OnInit {
   progress: number = 0;
 
   constructor(private musicPlayerService: MusicPlayerService) {
-    this.currentSong = this.playlist[this.currentSongIndex];
     this.audio = new Audio();
-    this.audio.src = this.currentSong.audioFile;
-    this.audio.load();
-    this.musicPlayerService.setCurrentSong(this.currentSong);
   }
 
   ngOnInit() {
-    console.log('currentSong.albumArt on init:', this.currentSong.albumArt);
+    this.musicPlayerService.currentSong$.subscribe((song: SpotifyTrack | null) => {
+      if (song) {
+        this.currentSong = song;
+        this.audio.src = song.external_urls.spotify; // Esto no funcionará directamente, es solo un ejemplo
+        this.audio.load();
+        this.playPause();
+      }
+    });
+
     this.audio.addEventListener('timeupdate', () => {
       this.currentTime = this.formatTime(this.audio.currentTime);
       this.progress = (this.audio.currentTime / this.audio.duration) * 100;
@@ -84,24 +57,11 @@ export class PlayerBarComponent implements OnInit {
   }
 
   nextSong() {
-    this.currentSongIndex = (this.currentSongIndex + 1) % this.playlist.length;
-    this.loadSong();
+    this.musicPlayerService.playNext();
   }
 
   prevSong() {
-    this.currentSongIndex = (this.currentSongIndex - 1 + this.playlist.length) % this.playlist.length;
-    this.loadSong();
-  }
-
-  loadSong() {
-    this.currentSong = this.playlist[this.currentSongIndex];
-    this.audio.src = this.currentSong.audioFile;
-    this.audio.load();
-    this.musicPlayerService.setCurrentSong(this.currentSong);
-    console.log('currentSong.albumArt on loadSong:', this.currentSong.albumArt);
-    if (this.isPlaying) {
-      this.audio.play();
-    }
+    this.musicPlayerService.playPrevious();
   }
 
   formatTime(seconds: number): string {

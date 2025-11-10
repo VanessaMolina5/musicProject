@@ -1,5 +1,8 @@
-import { Component } from '@angular/core';
+import { Component, EventEmitter, Output } from '@angular/core';
 import { FormsModule } from '@angular/forms';
+import { CommonModule } from '@angular/common';
+import { SpotifyApiService } from '../../services/spotify/spotify-api.service';
+import { SpotifyTrack } from '../../models/spotify-models';
 
 @Component({
   selector: 'app-search-bar',
@@ -9,11 +12,18 @@ import { FormsModule } from '@angular/forms';
   styleUrl: './search-bar.css',
 })
 export class SearchBarComponent {
-
+  @Output() search = new EventEmitter<SpotifyTrack[]>();
   searchTerm: string = '';
 
-  search() {
-    console.log('Buscando:', this.searchTerm);
-    // Aquí se implementará la lógica de búsqueda real
+  constructor(private spotifyApi: SpotifyApiService) {}
+
+  onSearch() {
+    if (this.searchTerm) {
+      this.spotifyApi.search(this.searchTerm).subscribe(results => {
+        this.search.emit(results.tracks.items);
+      });
+    } else {
+      this.search.emit([]);
+    }
   }
 }

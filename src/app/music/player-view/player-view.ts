@@ -2,11 +2,12 @@ import { Component, OnInit, OnDestroy } from '@angular/core';
 import { MusicPlayerService } from '../music-player.service';
 import { Subscription } from 'rxjs';
 import { CommonModule } from '@angular/common';
+import { PlaylistComponent } from '../playlist/playlist';
 
 @Component({
   selector: 'app-player-view',
   standalone: true,
-  imports: [CommonModule],
+  imports: [CommonModule, PlaylistComponent],
   templateUrl: './player-view.html',
   styleUrl: './player-view.css',
 })

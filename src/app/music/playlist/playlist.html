@@ -1,0 +1,24 @@
+<div class="playlist-container">
+  <div class="playlist-header">
+    <div class="header-item">#</div>
+    <div class="header-item">Título</div>
+    <div class="header-item">Álbum</div>
+    <div class="header-item">Duración</div>
+  </div>
+  <div class="playlist-body">
+    <div *ngFor="let track of tracks; let i = index" class="playlist-row" (click)="onSongClick(i)" [class.active]="isActive(i)">
+      <div class="row-item">{{ i + 1 }}</div>
+      <div class="row-item">
+        <div class="track-info">
+          <img [src]="track.album.images[0]?.url" alt="{{ track.name }}" class="album-art">
+          <div class="track-details">
+            <div class="track-name">{{ track.name }}</div>
+            <div class="artist-name">{{ track.artists[0]?.name }}</div>
+          </div>
+        </div>
+      </div>
+      <div class="row-item">{{ track.album.name }}</div>
+      <div class="row-item">{{ track.duration_ms | date:'m:ss' }}</div>
+    </div>
+  </div>
+</div>
