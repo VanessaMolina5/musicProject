@@ -1,9 +1,9 @@
-<footer class="player">
-    <div class="song-info" *ngIf="currentSong">
-      <img [src]="currentSong.album.images[0]?.url" alt="Portada">
+<footer class="player" *ngIf="currentSong">
+    <div class="song-info">
+      <img [src]="currentSong.album.images[0].url" alt="Portada">
       <div>
         <p class="title">{{ currentSong.name }}</p>
-        <p class="artist">{{ currentSong.artists[0]?.name }}</p>
+        <p class="artist">{{ currentSong.artists[0].name }}</p>
       </div>
     </div>
 

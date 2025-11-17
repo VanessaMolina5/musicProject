@@ -1,3 +1,10 @@
-<div class="search-container">
-  <input type="text" placeholder="Search for a song...">
-</div>
+\u003cdiv class="song-list"\u003e
+  \u003cdiv *ngFor="let track of tracks" class="song-item" (click)="playSong(track)"\u003e
+    \u003cimg [src]="track.album.images[0].url" alt="{{ track.album.name }}" class="album-art"\u003e
+    \u003cdiv class="song-details"\u003e
+      \u003cdiv class="song-title"\u003e{{ track.name }}\u003c/div\u003e
+      \u003cdiv class="song-artist"\u003e{{ track.artists[0].name }}\u003c/div\u003e
+    \u003c/div\u003e
+    \u003cdiv class="song-duration"\u003e{{ track.duration_ms | date:'mm:ss' }}\u003c/div\u003e
+  \u003c/div\u003e
+\u003c/div\u003e

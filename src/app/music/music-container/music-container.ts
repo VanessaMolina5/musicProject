@@ -1,21 +1,20 @@
 import { Component } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { SearchBarComponent } from '../search-bar/search-bar';
-import { PlaylistComponent } from '../playlist/playlist';
+import { SearchResultsComponent } from '../search/search';
 import { SpotifyTrack } from '../../models/spotify-models';
-import { SpotifyApiService } from '../../services/spotify/spotify-api.service';
 
 @Component({
   selector: 'app-music-container',
   standalone: true,
-  imports: [CommonModule, SearchBarComponent, PlaylistComponent],
+  imports: [CommonModule, SearchBarComponent, SearchResultsComponent],
   templateUrl: './music-container.html',
   styleUrls: ['./music-container.css']
 })
 export class MusicContainerComponent {
   searchResults: SpotifyTrack[] = [];
 
-  onSearchResults(results: SpotifyTrack[]) {
-    this.searchResults = results;
+  onSearchResults(results: any) {
+    this.searchResults = results.tracks.items;
   }
 }

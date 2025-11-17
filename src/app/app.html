@@ -1,12 +1,7 @@
-<div *ngIf="!isAuthenticated">
-  <button (click)="login()">Login with Spotify</button>
-</div>
-
-<div *ngIf="isAuthenticated">
-  <main>
-    <app-music-container></app-music-container>
-    <app-player-bar></app-player-bar>
-  </main>
-</div>
+<main>
+  <app-search-bar></app-search-bar>
+  <app-player-view></app-player-view>
+  <app-player-bar></app-player-bar>
+</main>
 
 <router-outlet />

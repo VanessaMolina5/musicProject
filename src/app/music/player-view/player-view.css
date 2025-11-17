@@ -1,6 +1,13 @@
 .player-view-container {
   display: flex;
-  gap: 20px;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 20px;
+  background-color: #1a1a1a;
+  color: #fff;
+  height: 100%;
+  text-align: center;
 }
 
 .main-album-art {
