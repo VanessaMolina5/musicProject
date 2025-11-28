@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
-import { Observable } from 'rxjs';
+import { firstValueFrom } from 'rxjs';
 
 @Injectable({
   providedIn: 'root'
@@ -11,7 +11,7 @@ export class SpotifyService {
   private clientSecret = 'TU_CLIENT_SECRET';
   private tokenUrl = 'https://accounts.spotify.com/api/token';
   private searchUrl = 'https://api.spotify.com/v1/search';
-  private accessToken: string = '';
+  private accessToken: string | null = null;
 
   constructor(private http: HttpClient) { }
 
@@ -28,7 +28,7 @@ export class SpotifyService {
     const body = 'grant_type=client_credentials';
 
     try {
-      const response: any = await this.http.post(this.tokenUrl, body, { headers }).toPromise();
+      const response: any = await firstValueFrom(this.http.post(this.tokenUrl, body, { headers }));
       this.accessToken = response.access_token;
     } catch (error) {
       console.error('Error getting access token', error);
@@ -38,10 +38,14 @@ export class SpotifyService {
   public async searchTracks(query: string): Promise\u003cany\u003e {
     await this.getAccessToken();
 
+    if (!this.accessToken) {
+      throw new Error('Access token not available');
+    }
+
     const headers = new HttpHeaders({
       'Authorization': 'Bearer ' + this.accessToken
     });
 
-    return this.http.get(`${this.searchUrl}?q=${query}\u0026type=track`, { headers }).toPromise();
+    return firstValueFrom(this.http.get(`${this.searchUrl}?q=${query}\u0026type=track`, { headers }));
   }
 }

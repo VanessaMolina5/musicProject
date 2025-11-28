@@ -24,7 +24,7 @@ export class PlayerBarComponent implements OnInit {
   }
 
   ngOnInit() {
-    this.musicPlayerService.currentSong$.subscribe(song =\u003e {
+    this.musicPlayerService.currentSong$.subscribe((song: SpotifyTrack | null) => {
       if (song) {
         this.currentSong = song;
         if (song.isLocal) {
@@ -41,16 +41,16 @@ export class PlayerBarComponent implements OnInit {
       }
     });
 
-    this.audio.addEventListener('timeupdate', () =\u003e {
+    this.audio.addEventListener('timeupdate', () => {
       this.currentTime = this.formatTime(this.audio.currentTime);
       this.progress = (this.audio.currentTime / this.audio.duration) * 100;
     });
 
-    this.audio.addEventListener('loadedmetadata', () =\u003e {
+    this.audio.addEventListener('loadedmetadata', () => {
       this.duration = this.formatTime(this.audio.duration);
     });
 
-    this.audio.addEventListener('ended', () =\u003e {
+    this.audio.addEventListener('ended', () => {
       this.nextSong();
     });
   }
@@ -78,7 +78,7 @@ export class PlayerBarComponent implements OnInit {
   formatTime(seconds: number): string {
     const minutes = Math.floor(seconds / 60);
     const secs = Math.floor(seconds % 60);
-    return `${minutes}:${secs \u003c 10 ? '0' : ''}${secs}`;
+    return `${minutes}:${secs < 10 ? '0' : ''}${secs}`;
   }
 
   seek(event: any) {
