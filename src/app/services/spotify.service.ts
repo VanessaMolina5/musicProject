@@ -1,25 +1,22 @@
 import { Injectable } from '@angular/core';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { firstValueFrom } from 'rxjs';
+import { environment } from '../environments/environment';
 
 @Injectable({
   providedIn: 'root'
 })
 export class SpotifyService {
 
-  private clientId = 'TU_CLIENT_ID';
-  private clientSecret = 'TU_CLIENT_SECRET';
-  private tokenUrl = 'https://accounts.spotify.com/api/token';
+  private clientId = environment.spotify.clientId;
+  private clientSecret = environment.spotify.clientSecret;
+  private tokenUrl = environment.spotify.AUTH_API_URL;
   private searchUrl = 'https://api.spotify.com/v1/search';
   private accessToken: string | null = null;
 
   constructor(private http: HttpClient) { }
 
-  private async getAccessToken(): Promise\u003cvoid\u003e {
-    if (this.accessToken) {
-      return;
-    }
-
+  private async getAccessToken(): Promise<void> {
     const headers = new HttpHeaders({
       'Content-Type': 'application/x-www-form-urlencoded',
       'Authorization': 'Basic ' + btoa(this.clientId + ':' + this.clientSecret)
@@ -35,7 +32,7 @@ export class SpotifyService {
     }
   }
 
-  public async searchTracks(query: string): Promise\u003cany\u003e {
+  public async searchTracks(query: string): Promise<any> {
     await this.getAccessToken();
 
     if (!this.accessToken) {
@@ -46,6 +43,6 @@ export class SpotifyService {
       'Authorization': 'Bearer ' + this.accessToken
     });
 
-    return firstValueFrom(this.http.get(`${this.searchUrl}?q=${query}\u0026type=track`, { headers }));
+    return firstValueFrom(this.http.get(`${this.searchUrl}?q=${encodeURIComponent(query)}&type=track`, { headers }));
   }
 }

@@ -6,8 +6,8 @@ import { SpotifyTrack } from '../models/spotify-models';
   providedIn: 'root'
 })
 export class MusicPlayerService {
-  private currentSongSubject: BehaviorSubject\u003cSpotifyTrack | null\u003e = new BehaviorSubject\u003cSpotifyTrack | null\u003e(null);
-  public currentSong$: Observable\u003cSpotifyTrack | null\u003e = this.currentSongSubject.asObservable();
+  private currentSongSubject: BehaviorSubject<SpotifyTrack | null> = new BehaviorSubject<SpotifyTrack | null>(null);
+  public currentSong$: Observable<SpotifyTrack | null> = this.currentSongSubject.asObservable();
   private playlist: SpotifyTrack[] = [];
   private currentIndex: number = -1;
 
@@ -32,14 +32,14 @@ export class MusicPlayerService {
   }
 
   playNext() {
-    if (this.playlist.length \u003e 0) {
+    if (this.playlist.length > 0) {
       this.currentIndex = (this.currentIndex + 1) % this.playlist.length;
       this.setCurrentSong(this.playlist[this.currentIndex]);
     }
   }
 
   playPrevious() {
-    if (this.playlist.length \u003e 0) {
+    if (this.playlist.length > 0) {
       this.currentIndex = (this.currentIndex - 1 + this.playlist.length) % this.playlist.length;
       this.setCurrentSong(this.playlist[this.currentIndex]);
     }

@@ -6,12 +6,11 @@ import { SpotifyService } from '../../services/spotify.service';
   selector: 'app-search-bar',
   standalone: true,
   imports: [FormsModule],
-  providers: [SpotifyService],
   templateUrl: './search-bar.html',
   styleUrl: './search-bar.css',
 })
 export class SearchBarComponent {
-  @Output() searchResults = new EventEmitter\u003cany\u003e();
+  @Output() searchResults = new EventEmitter<any>();
   searchTerm: string = '';
 
   constructor(private spotifyService: SpotifyService) {}

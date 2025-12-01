@@ -1,5 +1,6 @@
 <main>
-  <app-search-bar></app-search-bar>
+  <app-search-bar (searchResults)="onSearchResults($event)"></app-search-bar>
+  <app-search-results [tracks]="searchResults"></app-search-results>
   <app-player-view></app-player-view>
   <app-player-bar></app-player-bar>
 </main>
